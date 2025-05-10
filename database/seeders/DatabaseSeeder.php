@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\PoyaDay;
-use App\Models\Booking;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,11 +16,14 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin User',
+            'email' => 'admin@smn.lk',
+            'password' => 'admin-smn'
         ]);
 
-        PoyaDay::factory(12)->create();
-        Booking::factory(16)->create();
+        $this->call([
+            PoyaDaySeeder::class,
+            BookingSeeder::class,
+        ]);
     }
 }
