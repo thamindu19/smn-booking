@@ -21,12 +21,12 @@ class BookingSeeder extends Seeder
             ]);
         });
         PoyaDay::limit(5)->pluck('id')->each(function ($id) {
-            Booking::factory()->create([
+            $booking = Booking::factory()->create([
                 'status' => 'approved',
                 'poya_day_id' => $id,
             ]);
             PoyaDay::find($id)->update([
-                'booking_id' => Booking::where('poya_day_id', $id)->first()->id,
+                'booking_id' => $booking->id,
             ]);
         });
         PoyaDay::orderBy('id')->skip(5)->limit(2)->pluck('id')->each(function ($id) {
