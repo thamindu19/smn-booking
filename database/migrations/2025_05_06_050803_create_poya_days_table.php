@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('poya_days', function (Blueprint $table) {
             $table->id();
-            $table->string('month');
+            $table->string('month', 50);
             $table->date('date');
-            $table->foreignId('booking_id')->nullable()->unique()->constrained();
+            $table->foreignId('booking_id')->nullable()->unique()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }

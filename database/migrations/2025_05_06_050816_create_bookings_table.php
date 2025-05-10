@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('poya_day_id')->constrained();
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone');
-            $table->text('notes');
-            $table->enum('status', ['pending', 'approved', 'rejected']);
-            $table->timestamps();
+                $table->foreignId('poya_day_id')->constrained()->onDelete('cascade');
+                $table->string('name', 150);
+                $table->string('email', 254);
+                $table->string('phone', 20);
+                $table->text('notes');
+                $table->enum('status', ['pending', 'approved', 'rejected']);
+                $table->timestamps();
         });
     }
 
