@@ -39,6 +39,6 @@ class PoyaDay extends Model
      */
     public function booking()
     {
-        return $this->hasOne(Booking::class);
+        return $this->belongsTo(Booking::class, 'booking_id');
     }
 }
