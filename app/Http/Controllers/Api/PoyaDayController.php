@@ -21,7 +21,7 @@ class PoyaDayController extends Controller
             ->get()
             ->groupBy('poya_day_id');
         $poyaDays->each(function ($poyaDay) use ($pendingBookings) {
-            $poyaDay->pending_bookings = $pendingBookings->get($poyaDay->id, collect());
+            $poyaDay->pending_bookings = $pendingBookings->get($poyaDay->id, collect())->count();
         });
 
         return PoyaDayResource::collection($poyaDays);

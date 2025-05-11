@@ -18,7 +18,7 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import type { BreadcrumbItem, NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid, Menu } from 'lucide-vue-next';
 import { computed } from 'vue';
 
 interface Props {
@@ -58,19 +58,19 @@ const mainNavItems = computed<NavItem[]>(() => {
 const rightNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
+        href: 'https://github.com/thamindu19/smn-booking',
         icon: Folder,
     },
     {
         title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
+        href: 'https://github.com/thamindu19/smn-booking/blob/master/README.md',
         icon: BookOpen,
     },
 ];
 </script>
 
 <template>
-    <div>
+    <div v-if="auth.user">
         <div class="border-sidebar-border/80 border-b">
             <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                 <!-- Mobile Menu -->
@@ -145,10 +145,6 @@ const rightNavItems: NavItem[] = [
 
                 <div class="ml-auto flex items-center space-x-2">
                     <div class="relative flex items-center space-x-1">
-                        <Button variant="ghost" size="icon" class="group h-9 w-9 cursor-pointer">
-                            <Search class="size-5 opacity-80 group-hover:opacity-100" />
-                        </Button>
-
                         <div class="hidden space-x-1 lg:flex">
                             <template v-for="item in rightNavItems" :key="item.title">
                                 <TooltipProvider :delay-duration="0">
@@ -175,7 +171,7 @@ const rightNavItems: NavItem[] = [
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                class="focus-within:ring-primary relative size-10 w-auto rounded-full p-1 focus-within:ring-2"
+                                class="focus-within:ring-primary relative size-10 w-auto cursor-pointer rounded-full p-1 focus-within:ring-2"
                             >
                                 <Avatar class="size-8 overflow-hidden rounded-full">
                                     <AvatarImage v-if="auth.user.avatar" :src="auth.user.avatar" :alt="auth.user.name" />
@@ -196,6 +192,25 @@ const rightNavItems: NavItem[] = [
         <div v-if="props.breadcrumbs.length > 1" class="border-sidebar-border/70 flex w-full border-b">
             <div class="mx-auto flex h-12 w-full items-center justify-start px-4 text-neutral-500 md:max-w-7xl">
                 <Breadcrumbs :breadcrumbs="breadcrumbs" />
+            </div>
+        </div>
+    </div>
+    <div v-else>
+        <div class="border-sidebar-border/80 border-b">
+            <div class="mx-auto flex h-16 items-center justify-between px-4 md:max-w-7xl">
+                <div class="flex items-center gap-2">
+                    <Link :href="route('home')" class="flex items-center gap-x-2">
+                        <AppLogo />
+                    </Link>
+                </div>
+                <nav class="flex items-center space-x-4">
+                    <Link
+                        :href="route('login')"
+                        class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                    >
+                        Log in
+                    </Link>
+                </nav>
             </div>
         </div>
     </div>

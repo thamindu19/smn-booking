@@ -23,7 +23,13 @@
         "vue-tsc": "^2.2.4"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.17",
+        "@fullcalendar/interaction": "^6.1.17",
+        "@fullcalendar/list": "^6.1.17",
+        "@fullcalendar/multimonth": "^6.1.17",
+        "@fullcalendar/vue3": "^6.1.17",
         "@inertiajs/vue3": "^2.0.0",
+        "@popperjs/core": "^2.11.8",
         "@tailwindcss/vite": "^4.1.1",
         "@vitejs/plugin-vue": "^5.2.1",
         "@vueuse/core": "^12.8.2",
@@ -32,13 +38,15 @@
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.0",
         "lucide-vue-next": "^0.468.0",
-        "reka-ui": "^2.2.0",
+        "reka-ui": "^2.2.1",
         "tailwind-merge": "^3.2.0",
         "tailwindcss": "^4.1.1",
+        "tippy.js": "^6.3.7",
         "tw-animate-css": "^1.2.5",
         "typescript": "^5.2.2",
         "vite": "^6.2.0",
         "vue": "^3.5.13",
+        "vue-sonner": "^1.3.2",
         "ziggy-js": "^2.4.2"
     },
     "optionalDependencies": {

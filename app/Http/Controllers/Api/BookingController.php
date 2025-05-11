@@ -15,7 +15,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        return BookingResource::collection(Booking::with('poyaDay')->get());
+        return BookingResource::collection(Booking::orderByDesc('id')->with('poyaDay')->get());
     }
 
     /**
@@ -73,6 +73,8 @@ class BookingController extends Controller
         $poyaDay->booking_id = $booking->id;
         $poyaDay->save();
 
+        $booking->load('poyaDay');
+
         return new BookingResource($booking);
     }
 
@@ -84,6 +86,8 @@ class BookingController extends Controller
         $booking = Booking::findOrFail($id);
         $booking->status = 'rejected';
         $booking->save();
+
+        $booking->load('poyaDay');
 
         return new BookingResource($booking);
     }
