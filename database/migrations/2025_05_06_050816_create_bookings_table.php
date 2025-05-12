@@ -35,6 +35,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('poya_days', function (Blueprint $table) {
+            $table->dropForeign(['booking_id']);
+        });
         Schema::dropIfExists('bookings');
     }
 };
