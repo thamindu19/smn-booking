@@ -37,16 +37,16 @@ const mediaQuery = () => {
 
 const getStoredAppearance = () => {
     if (typeof window === 'undefined') {
-        return null;
+        return 'light';
     }
 
-    return localStorage.getItem('appearance') as Appearance | null;
+    return localStorage.getItem('appearance') as Appearance | 'light';
 };
 
 const handleSystemThemeChange = () => {
     const currentAppearance = getStoredAppearance();
 
-    updateTheme(currentAppearance || 'system');
+    updateTheme(currentAppearance || 'light');
 };
 
 export function initializeTheme() {
@@ -56,14 +56,14 @@ export function initializeTheme() {
 
     // Initialize theme from saved preference or default to system...
     const savedAppearance = getStoredAppearance();
-    updateTheme(savedAppearance || 'system');
+    updateTheme(savedAppearance || 'light');
 
     // Set up system theme change listener...
     mediaQuery()?.addEventListener('change', handleSystemThemeChange);
 }
 
 export function useAppearance() {
-    const appearance = ref<Appearance>('system');
+    const appearance = ref<Appearance>('light');
 
     onMounted(() => {
         const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
