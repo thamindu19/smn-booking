@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('month', 50);
             $table->date('date');
-            $table->foreignId('booking_id')->nullable()->unique()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('booking_id')->nullable()->unique()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }

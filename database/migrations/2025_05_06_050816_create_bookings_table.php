@@ -13,13 +13,20 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-                $table->foreignId('poya_day_id')->constrained()->onDelete('cascade');
-                $table->string('name', 150);
-                $table->string('email', 254);
-                $table->string('phone', 20);
-                $table->text('notes');
-                $table->enum('status', ['pending', 'approved', 'rejected']);
-                $table->timestamps();
+            $table->unsignedBigInteger('poya_day_id')->constrained()->onDelete('cascade');
+            $table->string('name', 150);
+            $table->string('email', 254);
+            $table->string('phone', 20);
+            $table->text('notes');
+            $table->enum('status', ['pending', 'approved', 'rejected']);
+            $table->timestamps();
+        });
+
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->foreign('poya_day_id')->references('id')->on('poya_days')->onDelete('cascade');
+        });
+        Schema::table('poya_days', function (Blueprint $table) {
+            $table->foreign('booking_id')->references('id')->on('bookings')->onDelete('set null');
         });
     }
 
