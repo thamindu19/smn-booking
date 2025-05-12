@@ -71,6 +71,7 @@ const fetchEvents = async () => {
 
 onMounted(fetchEvents);
 
+const calendarRef = ref(null);
 const calendarOptions = computed(() => ({
     plugins: [listPlugin, multiMonthPlugin, interactionPlugin],
     headerToolbar: {
@@ -95,13 +96,25 @@ const calendarOptions = computed(() => ({
         info.el.style.overflow = 'hidden';
         if (info.event.extendedProps.status === 'Available') {
             info.el.style.cursor = 'pointer';
-            if (info.view.type === 'multiMonthYear') {
+            if (window.innerWidth > 768 && info.view.type === 'multiMonthYear') {
                 tippy(info.el, {
                     content: 'Click to book',
                     placement: 'top',
                     theme: 'material',
                 });
             }
+        } else if (info.event.extendedProps.status === 'Booked') {
+            tippy(info.el, {
+                content: 'Booked',
+                placement: 'top',
+                theme: 'light',
+            });
+        } else if (info.event.extendedProps.status === 'Pending') {
+            tippy(info.el, {
+                content: 'Pending',
+                placement: 'top',
+                theme: 'light',
+            });
         }
     },
 }));
@@ -127,7 +140,7 @@ function resetForm() {
         notes: '',
     };
 }
-function submitBookingForm() {
+async function submitBookingForm() {
     if (!selectedEvent.value) return;
 
     const payload = {
@@ -137,20 +150,23 @@ function submitBookingForm() {
         phone: bookingForm.value.phone,
         notes: bookingForm.value.notes,
     };
-    axios
-        .post('/api/bookings', payload)
-        .then(() => {
-            closeModal();
-            toast.success('Booking request successfully submitted');
-            fetchEvents();
-        })
-        .catch((error) => {
-            if (error.response && error.response.status === 422) {
-                console.error('Validation Errors:', error.response.data.errors);
-            } else {
-                console.error('Failed to submit booking:', error);
-            }
-        });
+    try {
+        await axios.post('/api/bookings', payload);
+        closeModal();
+        toast.success('Booking request successfully submitted');
+        await fetchEvents();
+        const calendarApi = calendarRef.value?.getApi();
+        if (calendarApi) {
+            calendarApi.removeAllEvents();
+            calendarApi.addEventSource(events.value);
+        }
+    } catch (error) {
+        if (error.response && error.response.status === 422) {
+            console.error('Validation Errors:', error.response.data.errors);
+        } else {
+            console.error('Failed to submit booking:', error);
+        }
+    }
 }
 function closeModal() {
     showBookingForm.value = false;
@@ -169,7 +185,7 @@ const formattedSelectedDate = computed(() => {
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-7 text-sm">
-            <FullCalendar class="demo-app-calendar" :options="calendarOptions">
+            <FullCalendar ref="calendarRef" class="demo-app-calendar" :options="calendarOptions">
                 <template v-slot:eventContent="arg">
                     <div v-if="arg.view.type === 'listYear'" class="flex w-full items-center justify-between">
                         <span class="w-2/5 font-medium">{{ arg.event.title }}</span>
